@@ -1,9 +1,10 @@
 # from concurrent import futures
+import time
 # import requests
 # from src.utils import read_links_txt
 #
 # links = read_links_txt('../input/images_links.txt')
-#
+# start = time.perf_counter()
 # with futures.ThreadPoolExecutor(max_workers=4) as executor:
 #     futures = [
 #         executor.submit(
@@ -14,6 +15,7 @@
 #     f.result().status_code
 #     for f in futures
 # ]
+# print(f'Elapsed:{time.perf_counter()-start}')
 # print("Results: %s" % results)
 
 import os
@@ -32,10 +34,10 @@ def download(link):
     with open(os.path.join(img_dir, get_file_name_from_url(link)), 'wb') as f:
         f.write(requests.get(link).content)
 
-
-with futures.ThreadPoolExecutor(max_workers=4) as executor:
+start = time.perf_counter()
+with futures.ThreadPoolExecutor(max_workers=10) as executor:
     futures = [
         executor.submit(download(link)) for link in links
     ]
-
+print(f'Elapsed:{time.perf_counter()-start}')
 
